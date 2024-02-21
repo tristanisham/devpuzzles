@@ -1,47 +1,77 @@
+:root {
+  --text: rgb(229, 243, 239);
+  --background: rgb(11, 24, 19);
+  --primary: rgb(155, 209, 192);
+  --secondary: rgb(52, 100, 113);
+  --accent: rgb(114, 158, 190);
+
+
+}
+
 body {
-    background-color: black;
-    color: white;
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  background-color: var(--background);
+  color: var(--text);
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  & a {
+    color: var(--primary);
+    &:visited, &:hover {
+      color: var(--secondary)
+    }
+  }
 }
 
 nav {
-    display: flex;
-    flex-direction: row;
-    row-gap: 2em;
+  display: flex;
+  flex-direction: row;
+  row-gap: 2em;
+  padding-left: 1em;
+  padding-right: 1em;
 
-    & .nav-logo {
-        font-size: larger;
-        font-weight: bold;
-    }
+  & .nav-logo {
+    font-size: xx-large;
+    font-weight: bold;
+    color: var(--secondary);
+    text-decoration: none;
+  }
 }
 
 img {
-    max-width: 100%;
+  max-width: 100%;
+}
+
+footer {
+  padding-top: 2em;
+  color: var(--text)
 }
 
 .container {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 1rem; /* Adjust padding as needed */
-  
-    /* Max-width settings similar to Tailwind's default breakpoints */
-    max-width: 640px; /* Sm breakpoint */
-    
-    /* Responsive max-widths */
-    @media (min-width: 768px) { /* Md breakpoint */
-      max-width: 768px;
-    }
-    
-    @media (min-width: 1024px) { /* Lg breakpoint */
-      max-width: 1024px;
-    }
-    
-    @media (min-width: 1280px) { /* Xl breakpoint */
-      max-width: 1280px;
-    }
-    
-    @media (min-width: 1536px) { /* 2xl breakpoint */
-      max-width: 1536px;
-    }
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+  /* Adjust padding as needed */
+
+  /* Max-width settings similar to Tailwind's default breakpoints */
+  max-width: 640px;
+  /* Sm breakpoint */
+
+  /* Responsive max-widths */
+  @media (min-width: 768px) {
+    /* Md breakpoint */
+    max-width: 768px;
   }
-  
+
+  @media (min-width: 1024px) {
+    /* Lg breakpoint */
+    max-width: 1024px;
+  }
+
+  @media (min-width: 1280px) {
+    /* Xl breakpoint */
+    max-width: 1280px;
+  }
+
+  @media (min-width: 1536px) {
+    /* 2xl breakpoint */
+    max-width: 1536px;
+  }
+}

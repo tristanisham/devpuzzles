@@ -1,15 +1,42 @@
 {% layout 'layout' %}
 
-<main>
-  <p>Excuse the mess. This site is under construction, so everything looks like dog poo and functions about the same.</p>
-  <p>If you'd like to contribute a puzzle, just ask <a href="https://x.com/atalocke">me</a> and I'll invite you
-  to the repo. It's not public because, obviously, that'll give away the puzzle answers.</p>
-  <h2>Puzzles</h2>
+<main class="container">
+  <h1>Welcome to DevPuzzles</h1>
+  <p>
+    DevPuzzles focuses on providing fun challenges, games, and puzzles related to computers. Our puzzles are made <a
+      href="https://github.com/tristanisham/devpuzzles"> by our community</a>
+    and we encourage you to make your own!
+  </p>
+
+  <h1>Puzzles</h1>
   <ul>
-      <li><a href="/format/1">Format Puzzles</a></li>
-  </ul>    
+    <li><a href="/format/1">Format Puzzles</a></li>
+  </ul>
+
+  <h1>What makes a good puzzle?</h1>
+  <p>
+    Puzzles are self-contained bundles of human-readable JavaScript that live in <code>puzzles/</code> containing at
+    least a <code>puzzle.mjs</code> file.
+    DevPuzzles is built on Express.js, and puzzles can be any handler that manipulated Express' <code>Request</code> and
+    <code>Response</code> objects.
+    Each puzzle is manually reviewed for saftey so you can feel comfortable exploring a solution, no matter how
+    adventurous.
+  </p>
+
+  <figure>
+    <img src="puzzle-config-example.png" alt="Example of a puzzle config. Look at Github for a text example.">
+    <figcaption>Example of a simple <code>puzzle.mjs</code> configuration</figcaption>
+  </figure>
+
 </main>
 
+<style>
+  p {
+    font-size: larger;
+    font-weight: 400;
+  }
+</style>
+
 {% block 'footer' %}
-  Copyright @ 2022, Tristan Isham
+Copyright @ 2022, Tristan Isham
 {% endblock %}

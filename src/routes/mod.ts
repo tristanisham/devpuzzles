@@ -1,1 +1,1 @@
-export * from "./fmt.js"
+export * from "./fmt.js";
