@@ -41,8 +41,8 @@ app.get("/", (_req, res): any => {
 
 
 // Kepler
-app.get("/http/1", routes.httpFirstPuzzle);
-app.post("/http/1", routes.httpFirstPuzzlePOST)
+app.get("/format/1", routes.fmtFirstPuzzle);
+app.post("/format/1", routes.fmtFirstPuzzlePOST)
 
 if (
     process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined
