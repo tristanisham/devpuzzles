@@ -14,3 +14,30 @@ nav {
         font-weight: bold;
     }
 }
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem; /* Adjust padding as needed */
+  
+    /* Max-width settings similar to Tailwind's default breakpoints */
+    max-width: 640px; /* Sm breakpoint */
+    
+    /* Responsive max-widths */
+    @media (min-width: 768px) { /* Md breakpoint */
+      max-width: 768px;
+    }
+    
+    @media (min-width: 1024px) { /* Lg breakpoint */
+      max-width: 1024px;
+    }
+    
+    @media (min-width: 1280px) { /* Xl breakpoint */
+      max-width: 1280px;
+    }
+    
+    @media (min-width: 1536px) { /* 2xl breakpoint */
+      max-width: 1536px;
+    }
+  }
+  

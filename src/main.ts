@@ -4,7 +4,7 @@ import morgan from "morgan";
 import { rateLimit } from "express-rate-limit";
 import { Liquid } from "liquidjs";
 import path from "node:path";
-import { firstPuzzle } from "./kepler.js";
+import * as routes from "./routes/mod.js"
 
 // Server configuration starts
 const app = express();
@@ -39,8 +39,7 @@ app.get("/", (_req, res): any => {
 });
 
 // Kepler
-app.get("/kepler/1", firstPuzzle)
-
+app.get("/kepler/1", routes.firstPuzzle);
 
 if (
     process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined
