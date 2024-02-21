@@ -56,9 +56,7 @@ export async function loadPuzzlesRecursively(puzzlePath: string, app: Express) {
             const config = puzzleConfig.default as PuzzleConfig;
             // database bs to save name and description
             for (const entry of config.routes) {
-                // TODO: Make an actual normalization function
                 const puzzleRoute = normalizePuzzleRoute(`${entryPath.replace(process.cwd(), "")}/${entry.path}`)
-                console.debug(puzzleRoute)
                 switch (entry.method) {
                     case "GET":
                         app.get(puzzleRoute, entry.handler);
