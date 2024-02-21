@@ -3,12 +3,13 @@ import process from "node:process";
 import morgan from "morgan";
 import { rateLimit } from "express-rate-limit";
 import { Liquid } from "liquidjs";
-import path from "node:path"
+import path from "node:path";
+import { firstPuzzle } from "./kepler.js";
 
 // Server configuration starts
 const app = express();
 app.use(morgan("tiny"));
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -20,19 +21,26 @@ const limiter = rateLimit({
 app.use(limiter);
 
 const engine = new Liquid({
-    cache: process.env.NODE_ENV === 'production',
-    extname: ".liquid"
+    cache: process.env.NODE_ENV === "production",
+    extname: ".liquid",
 });
 app.engine("liquid", engine.express());
-app.set("views", [path.join(process.cwd(), "templates/"), path.join(process.cwd(), "views/")]);
+app.set("views", [
+    path.join(process.cwd(), "templates/"),
+    path.join(process.cwd(), "views/"),
+]);
 app.set("view engine", "liquid");
 
 // Router
 app.get("/", (_req, res): any => {
     res.render("index", {
-        title: "Dev Puzzles"
+        title: "Dev Puzzles",
     });
 });
+
+// Kepler
+app.get("/kepler/1", firstPuzzle)
+
 
 if (
     process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined
