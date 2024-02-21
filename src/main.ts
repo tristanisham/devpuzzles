@@ -5,11 +5,12 @@ import { rateLimit } from "express-rate-limit";
 import { Liquid } from "liquidjs";
 import path from "node:path";
 import * as routes from "./routes/mod.js"
-
+import bodyParser from "body-parser";
 // Server configuration starts
 const app = express();
 app.use(morgan("tiny"));
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({extended: true}))
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -38,8 +39,10 @@ app.get("/", (_req, res): any => {
     });
 });
 
+
 // Kepler
-app.get("/kepler/1", routes.firstPuzzle);
+app.get("/http/1", routes.httpFirstPuzzle);
+app.post("/http/1", routes.httpFirstPuzzlePOST)
 
 if (
     process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined
