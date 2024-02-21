@@ -4,17 +4,18 @@
   --primary: rgb(155, 209, 192);
   --secondary: rgb(52, 100, 113);
   --accent: rgb(114, 158, 190);
-
-
 }
 
 body {
   background-color: var(--background);
   color: var(--text);
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
   & a {
     color: var(--primary);
-    &:visited, &:hover {
+
+    &:visited,
+    &:hover {
       color: var(--secondary)
     }
   }
@@ -23,7 +24,7 @@ body {
 nav {
   display: flex;
   flex-direction: row;
-  row-gap: 2em;
+  align-items: baseline;
   padding-left: 1em;
   padding-right: 1em;
 
@@ -32,6 +33,21 @@ nav {
     font-weight: bold;
     color: var(--secondary);
     text-decoration: none;
+  }
+
+
+  & .nav-item {
+    font-size: large;
+    font-weight: bold;
+    color: var(--secondary);
+    text-decoration: none;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    & :hover {
+      text-decoration: underline;
+    }
+
   }
 }
 
@@ -74,4 +90,36 @@ footer {
     /* 2xl breakpoint */
     max-width: 1536px;
   }
+}
+
+
+form {
+  background-color: var(--background);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input[type="text"] {
+  background-color: white;
+  color: black;
+  border: 1px solid var(--secondary);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+button[type="submit"] {
+  background-color: var(--secondary);
+  color: var(--text);
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--accent);
 }

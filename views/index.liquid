@@ -23,10 +23,42 @@
     adventurous.
   </p>
 
-  <figure>
-    <img src="puzzle-config-example.png" alt="Example of a puzzle config. Look at Github for a text example.">
-    <figcaption>Example of a simple <code>puzzle.mjs</code> configuration</figcaption>
-  </figure>
+  <div id="puzzle-mjs-example">
+    <div>
+      <pre>
+/**
+ * @typedef {import("../../puzzle-api").PuzzleConfig}
+ */
+const config = {
+  name: "dummy",
+  description: "This is just a test config for my import function",
+  author: "Tristan Isham",
+  routes: [
+    {
+      path: "/",
+      method: "GET",
+      handler: (req, res) => {
+        res.send("Success!");
+      },
+    },
+  ],
+};
+
+export default config;
+
+    </pre>
+    </div>
+    <div>
+      <figure>
+        <img src="puzzle-config-example.png" alt="Example of a puzzle config. Look at Github for a text example.">
+        <figcaption>Example of a simple <code>puzzle.mjs</code> configuration</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <p>
+    The above code will be rendered at <a href="/puzzle/dummy/">/puzzle/dummy/</a>. You can see how this is powerful.
+  </p>
 
 </main>
 
@@ -34,6 +66,11 @@
   p {
     font-size: larger;
     font-weight: 400;
+  }
+
+  #puzzle-mjs-example {
+    display: flex;
+    flex-direction: row;
   }
 </style>
 
