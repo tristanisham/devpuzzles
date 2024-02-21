@@ -1,0 +1,16 @@
+body {
+    background-color: black;
+    color: white;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    row-gap: 2em;
+
+    & .nav-logo {
+        font-size: larger;
+        font-weight: bold;
+    }
+}

@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev Puzzles</title>
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Hi!</p>
+{% render "nav" %}
+{% block %}{% endblock %}
+
+<footer> {% block footer %}{% endblock %} </footer>
 </body>
 </html>
