@@ -3,8 +3,8 @@ import { distance } from "fastest-levenshtein";
 
 export const fmtFirstPuzzle = (req: Request, res: Response): void => {
 
-  res.render("puzzles/http-1", {
-    title: "HTTP 1"
+  res.render("puzzles/fmt-1", {
+    title: "fmt 1"
   })
 };
 
