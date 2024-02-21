@@ -10,7 +10,7 @@ export const fmtFirstPuzzle = (req: Request, res: Response): void => {
 
 export const fmtFirstPuzzlePOST = (req: Request, res: Response): void => {
   const message = req.body.message;
-  const expected = "Congradulations employee #{ employee_id }, you have been promoted. Your new salary is + $0 greater than your current. Your new title is \"Scrum Master\". Congradulations.";
+  const expected = "Congratulations employee #{ employee_id }, you have been promoted. Your new salary is + $0 greater than your current. Your new title is \"Scrum Master\". Congratulations.";
   const score = distance(expected, message)
   if (score < 5 && score > 0) {
     res.setHeader('content-type', 'text/plain');
