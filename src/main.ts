@@ -6,6 +6,7 @@ import { Liquid } from "liquidjs";
 import path from "node:path";
 import * as routes from "./routes/mod.js"
 import bodyParser from "body-parser";
+import { loadPuzzlesRecursively } from "./puzzle-api.js";
 // Server configuration starts
 const app = express();
 app.use(morgan("tiny"));
@@ -39,6 +40,7 @@ app.get("/", (_req, res): any => {
     });
 });
 
+await loadPuzzlesRecursively("puzzles", app);
 
 // Kepler
 app.get("/format/1", routes.fmtFirstPuzzle);
