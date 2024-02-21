@@ -31,7 +31,7 @@ nav {
   & .nav-logo {
     font-size: xx-large;
     font-weight: bold;
-    color: var(--secondary);
+    color: var(--primary);
     text-decoration: none;
   }
 
@@ -39,12 +39,13 @@ nav {
   & .nav-item {
     font-size: large;
     font-weight: bold;
-    color: var(--secondary);
+    color: var(--primary);
     text-decoration: none;
     padding-left: 1em;
     padding-right: 1em;
 
     & :hover {
+      color: var(--secondary);
       text-decoration: underline;
     }
 
