@@ -124,3 +124,13 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: var(--accent);
 }
+
+
+.alert {
+  background-color: var(--primary); /* Light green background */
+  color: var(--background); /* Dark text */
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+}

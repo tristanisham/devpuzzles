@@ -2,3 +2,5 @@
 dist/
 node_modules
 ecosystem.config.js
+prisma/*.db*
+prisma/migrations

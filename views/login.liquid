@@ -1,0 +1,25 @@
+{% layout 'layout' %}
+
+<main>
+    <div class="container">
+        {% if msg %}
+            <div class="alert">
+                {{ msg }}
+            </div>
+        {% endif %}
+        <form action="/login" method="POST" style="max-width: 400px; margin: auto;">
+            <h2>Login</h2>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Enter your email" autofocus>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</main>
+
+{% block 'footer' %}
+Copyright 2024, Tristan Isham
+{% endblock %}

@@ -2,15 +2,16 @@
  * @typedef {import("../../puzzle-api").PuzzleConfig}
  */
 const config = {
-  name: "dummy",
-  description: "This is just a test config for my import function",
+  name: "Kepler",
+  description: "Help a transgalactic spaceshit get back to his journey",
   author: "Tristan Isham",
   routes: [
     {
       path: "/",
       method: "GET",
       handler: (req, res) => {
-        res.send("Success!");
+
+        res.render("kepler/prompt");
       },
     },
   ],

@@ -6,6 +6,7 @@ import path from "node:path";
 import { Express } from "express";
 import process from "node:process";
 import "dotenv/config";
+import pc from "picocolors"
 
 export default interface PuzzleConfig {
   name: string;
@@ -93,6 +94,8 @@ export async function loadPuzzlesRecursively(puzzlePath: string, app: Express) {
             app.trace(puzzleRoute, entry.handler);
             break;
         }
+
+        console.log(`Loaded ${pc.green(config.name)}`)
       }
     }
   }

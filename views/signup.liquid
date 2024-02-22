@@ -1,0 +1,26 @@
+{% layout 'layout' %}
+
+<main>
+    <div class="container">
+        <form action="/signup" method="POST" style="max-width: 400px; margin: auto;">
+            <h2>Signup</h2>
+            <label for="handle">Handle</label>
+            <input type="text" name="handle" id="handle" required placeholder="{{usernamePH}}" autofocus>
+
+            <label for="name">Your Name</label>
+            <input type="text" name="name" id="name" placeholder="{{namePH}}" autofocus>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Enter your email" autofocus>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" minlength="8" name="password" required placeholder="Enter your password">
+
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+</main>
+
+{% block 'footer' %}
+Copyright 2024, Tristan Isham
+{% endblock %}
