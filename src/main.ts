@@ -2,7 +2,7 @@ import express from "express";
 import process from "node:process";
 import morgan from "morgan";
 import { rateLimit } from "express-rate-limit";
-import { Liquid } from "liquidjs";
+import { engine } from 'express-handlebars';
 import path from "node:path";
 import * as routes from "./routes/mod.js";
 import bodyParser from "body-parser";
@@ -33,16 +33,13 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-const engine = new Liquid({
-  cache: process.env.NODE_ENV === "production",
-  extname: ".liquid",
-});
-app.engine("liquid", engine.express());
-app.set("views", [
-  path.join(process.cwd(), "templates/"),
-  path.join(process.cwd(), "views/"),
-]);
-app.set("view engine", "liquid");
+
+
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './views');
+app.enable('view cache');
+
 app.use(getUserToken)
 /**
  * 
@@ -50,9 +47,9 @@ app.use(getUserToken)
  * 
  */
 app.get("/", (req, res): void => {
-  console.debug(req.user);
-  res.render("index", {
-    title: "Dev Puzzles",
+  console.debug(`User signed in: ${req.user !== undefined}; ${req.user?.handle}`)
+  res.render("home", {
+    title: "DevPuzzles",
     user: req.user
   });
 });
@@ -73,11 +70,14 @@ app.get("/logout", (req, res): void => {
 })
 
 app.route("/signup")
-  .get((_req, res): void => {
+  .get((req, res): void => {
     res.render("signup", {
       title: "Signup | DevPuzzles",
       usernamePH: faker.internet.userName(),
       namePH: faker.person.fullName(),
+      user: req.user
+
+
     })
   })
   .post(await routes.signupPost(prisma))

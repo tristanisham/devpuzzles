@@ -1,0 +1,16 @@
+<nav>
+  <a class="nav-logo" href="/">{{title}}</a>
+  <a class="nav-item" href="https://github.com/tristanisham/devpuzzles">Our
+    Source Code &star;</a>
+  {{!  Spacer  }}
+  <div class="spacer" style="flex-grow: 1;"></div>
+
+  {{#if user }}
+  <a href="/@{{user.handle}}" class="nav-item">My profile</a>
+  {{else}}
+  <a href="/login" class="nav-item">Login</a>
+  <span>/</span>
+  <a href="/signup" class="nav-item">Signup</a>
+ {{/if}}
+
+</nav>

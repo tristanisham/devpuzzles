@@ -1,12 +1,10 @@
-{% layout 'layout' %}
-
 <main>
     <div class="container">
-        {% if msg %}
+        {#if msg}
             <div class="alert">
                 {{ msg }}
             </div>
-        {% endif %}
+        {/if}
         <form action="/login" method="POST" style="max-width: 400px; margin: auto;">
             <h2>Login</h2>
             <label for="email">Email</label>
@@ -20,6 +18,3 @@
     </div>
 </main>
 
-{% block 'footer' %}
-Copyright 2024, Tristan Isham
-{% endblock %}
