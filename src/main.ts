@@ -9,8 +9,8 @@ import bodyParser from "body-parser";
 // import { loadPuzzlesRecursively } from "./puzzle-api.js";
 import { PrismaClient } from '@prisma/client'
 import cookieParser from "cookie-parser";
-import { generateAccessToken, validatePassword } from "./auth.js";
 import { faker } from '@faker-js/faker';
+import { getToken as getUserToken } from "./auth.js";
 
 
 
@@ -43,15 +43,17 @@ app.set("views", [
   path.join(process.cwd(), "views/"),
 ]);
 app.set("view engine", "liquid");
-
+app.use(getUserToken)
 /**
  * 
  * Router
  * 
  */
-app.get("/", (_req, res): void => {
+app.get("/", (req, res): void => {
+  console.debug(req.user);
   res.render("index", {
     title: "Dev Puzzles",
+    user: req.user
   });
 });
 
@@ -66,11 +68,12 @@ app.route("/login")
 
 app.get("/logout", (req, res): void => {
   res.clearCookie('token', { path: '/' });
+  req.user = undefined;
   res.redirect("/");
 })
 
 app.route("/signup")
-  .get((req, res): void => {
+  .get((_req, res): void => {
     res.render("signup", {
       title: "Signup | DevPuzzles",
       usernamePH: faker.internet.userName(),

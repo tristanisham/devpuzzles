@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { generateAccessToken, validatePassword } from "../auth.js";
+import { generateAccessToken } from "../auth.js";
 import validator from "validator";
-import { PrismaClient, User } from "@prisma/client";
-import bcyrpt from "bcrypt";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient();
 
 
 export const loginPost = async (prisma: PrismaClient) => async (req: Request, res: Response) => {
@@ -19,19 +18,26 @@ export const loginPost = async (prisma: PrismaClient) => async (req: Request, re
     const email: string = formData.email;
     const password: string = formData.password;
 
-    if (!validatePassword(password)) {
+    // Make sure this is identical between login and signup.
+    // TODO figure out a way to centralize this.
+    if (!validator.isStrongPassword(password, {
+        minNumbers: 0,
+        returnScore: false,
+        minSymbols: 0
+    })) {
+        res.status(401)
+
         res.send(`Your password was deemed lame (insecure).
     
           - Minimum Length: The password should be at least 8 characters long.
           - Upper and Lowercase Letters: The password should include both uppercase and lowercase characters.
           - Numbers: The password should contain at least one number.
           - Special Characters: The password should include at least one special character (e.g., !@#$%^&*).`)
-        res.status(401)
 
         return
     } else if (!validator.isEmail(email)) {
-        res.send("You need to pass a valid email. Otherwise, the only thing I'm passing your way will be gas.")
         res.status(401)
+        res.send("You need to pass a valid email. Otherwise, the only thing I'm passing your way will be gas.")
         return
     }
 
@@ -42,7 +48,7 @@ export const loginPost = async (prisma: PrismaClient) => async (req: Request, re
     })
 
     if (user) {
-        const match = await bcyrpt.compare(password, user.password)
+        const match = await bcrypt.compare(password, user.password)
         if (match) {
             const token = generateAccessToken(user);
             res.cookie('token', token, {
@@ -54,7 +60,12 @@ export const loginPost = async (prisma: PrismaClient) => async (req: Request, re
             })
 
 
-
+            req.user = {
+                name: user.name,
+                handle: user.handle,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+            };
             res.redirect("/")
         } else {
             res.status(403)
@@ -76,8 +87,8 @@ export const signupPost = async (prisma: PrismaClient) => async (req: Request, r
     const formData = req.body;
 
     if (formData.email === undefined || formData.password === undefined || formData.handle === undefined || formData.name === undefined) {
-        res.send("Mising email, handle, or password. This is a bad request hommie.")
         res.status(401)
+        res.send("Mising email, handle, or password. This is a bad request hommie.")
         return
     }
 
@@ -86,23 +97,27 @@ export const signupPost = async (prisma: PrismaClient) => async (req: Request, r
     const handle: string = formData.handle;
     const name: string = formData.name;
 
-    if (!validatePassword(password)) {
+    if (!validator.isStrongPassword(password, {
+        minNumbers: 0,
+        returnScore: false,
+        minSymbols: 0,
+    })) {
+        res.status(401)
         res.send(`Your password was deemed lame (insecure).
 
       - Minimum Length: The password should be at least 8 characters long.
       - Upper and Lowercase Letters: The password should include both uppercase and lowercase characters.
       - Numbers: The password should contain at least one number.
       - Special Characters: The password should include at least one special character (e.g., !@#$%^&*).`)
-        res.status(401)
 
         return
     } else if (!validator.isEmail(email)) {
-        res.send("You need to pass a valid email. Otherwise, the only thing I'm passing your way will be gas.")
         res.status(401)
+        res.send("You need to pass a valid email. Otherwise, the only thing I'm passing your way will be gas.")
         return
     }
 
-    const pwd = await bcyrpt.hash(password, 10);
+    const pwd = await bcrypt.hash(password, 10);
 
 
     const existingUser = await prisma.user.findFirst({
