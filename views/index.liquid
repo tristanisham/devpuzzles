@@ -8,58 +8,6 @@
     and we encourage you to make your own!
   </p>
 
-  <h1>Puzzles</h1>
-  <ul>
-    <li><a href="/format/1">Format Puzzles</a></li>
-  </ul>
-
-  <h1>What makes a good puzzle?</h1>
-  <p>
-    Puzzles are self-contained bundles of human-readable JavaScript that live in <code>puzzles/</code> containing at
-    least a <code>puzzle.mjs</code> file.
-    DevPuzzles is built on Express.js, and puzzles can be any handler that manipulated Express' <code>Request</code> and
-    <code>Response</code> objects.
-    Each puzzle is manually reviewed for safety so you can feel comfortable exploring a solution, no matter how
-    adventurous.
-  </p>
-
-  <div id="puzzle-mjs-example">
-    <div>
-      <pre>
-/**
- * @typedef {import("../../puzzle-api").PuzzleConfig}
- */
-const config = {
-  name: "dummy",
-  description: "This is just a test config for my import function",
-  author: "Tristan Isham",
-  routes: [
-    {
-      path: "/",
-      method: "GET",
-      handler: (req, res) => {
-        res.send("Success!");
-      },
-    },
-  ],
-};
-
-export default config;
-
-    </pre>
-    </div>
-    <div>
-      <figure>
-        <img src="puzzle-config-example.png" alt="Example of a puzzle config. Look at Github for a text example.">
-        <figcaption>Example of a simple <code>puzzle.mjs</code> configuration</figcaption>
-      </figure>
-    </div>
-  </div>
-
-  <p>
-    The above code will be rendered at <a href="/puzzle/dummy/">/puzzle/dummy/</a>. You can see how this is powerful.
-  </p>
-
 </main>
 
 <style>
