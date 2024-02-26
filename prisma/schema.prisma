@@ -20,12 +20,21 @@ model User {
   password  String
   handle    String   @unique
   name      String?
-  puzzles   Puzzle[]
+  posts   Post[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  roleId    Int @default(1)
+  role      UserRole @relation(fields: [roleId], references: [id])
 }
 
-model Puzzle {
+// stores allowed values for user roles
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  role String @default("user")
+  users User[]
+}
+
+model Post {
   id          Int       @id @default(autoincrement())
   name        String
   description String
@@ -43,10 +52,10 @@ model Puzzle {
 model Comment {
   id        Int      @id @default(autoincrement())
   comment   String
-  puzzleId  Int      @map("postId")
-  puzzle    Puzzle   @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+  postID  Int      @map("postId")
+  post    Post   @relation(fields: [postID], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([puzzleId])
+  @@index([postID])
 }

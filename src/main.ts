@@ -2,8 +2,7 @@ import express from "express";
 import process from "node:process";
 import morgan from "morgan";
 import { rateLimit } from "express-rate-limit";
-import { engine } from 'express-handlebars';
-import path from "node:path";
+import { create as hbsCreate } from 'express-handlebars';
 import * as routes from "./routes/mod.js";
 import bodyParser from "body-parser";
 // import { loadPuzzlesRecursively } from "./puzzle-api.js";
@@ -11,6 +10,7 @@ import { PrismaClient } from '@prisma/client'
 import cookieParser from "cookie-parser";
 import { faker } from '@faker-js/faker';
 import { getToken as getUserToken } from "./auth.js";
+import helmet from "helmet";
 
 
 
@@ -23,6 +23,17 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
+// This sets custom options for the
+// Content-Security-Policy header.
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "script-src": ["'self'", "devpuzzles.com"],
+      },
+    },
+  }),
+);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -34,17 +45,23 @@ const limiter = rateLimit({
 app.use(limiter);
 
 
+const hbs = hbsCreate({
+  helpers: {
+    json(object: Object) { return JSON.stringify(object) },
+    len(data: Array<any>) { return data.length }
+  }
+});
 
-app.engine('handlebars', engine());
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 app.enable('view cache');
 
 app.use(getUserToken)
 /**
- * 
+ *
  * Router
- * 
+ *
  */
 app.get("/", (req, res): void => {
   console.debug(`User signed in: ${req.user !== undefined}; ${req.user?.handle}`)
@@ -53,6 +70,8 @@ app.get("/", (req, res): void => {
     user: req.user
   });
 });
+
+app.get("/@:handle", await routes.profileGet(prisma))
 
 app.route("/login")
   .get((req, res): void => {

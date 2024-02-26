@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { generateAccessToken } from "../auth.js";
+import { UserProfile, generateAccessToken } from "../auth.js";
 import validator from "validator";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
@@ -28,7 +28,7 @@ export const loginPost = async (prisma: PrismaClient) => async (req: Request, re
         res.status(401)
 
         res.send(`Your password was deemed lame (insecure).
-    
+
           - Minimum Length: The password should be at least 8 characters long.
           - Upper and Lowercase Letters: The password should include both uppercase and lowercase characters.
           - Numbers: The password should contain at least one number.
@@ -44,6 +44,9 @@ export const loginPost = async (prisma: PrismaClient) => async (req: Request, re
     const user = await prisma.user.findUnique({
         where: {
             email: email,
+        },
+        include: {
+            role: true
         }
     })
 
@@ -63,13 +66,15 @@ export const loginPost = async (prisma: PrismaClient) => async (req: Request, re
             req.user = {
                 name: user.name,
                 handle: user.handle,
+                role: user.role.role,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt,
-            };
+            } as UserProfile;
+
             res.redirect("/")
         } else {
             res.status(403)
-            res.redirect('/login?err=You%20goof.%20You%20absolute%20bongus.%20You%20got%20your%20password%20wrong.')
+            res.redirect('/login?msg=You%20goof.%20You%20absolute%20bongus.%20You%20got%20your%20password%20wrong.')
         }
     }
 
@@ -134,14 +139,22 @@ export const signupPost = async (prisma: PrismaClient) => async (req: Request, r
         return;
     }
 
-    const _ = await prisma.user.create({
-        data: {
-            email: email,
-            password: pwd,
-            handle: handle,
-            name: name || null
-        }
-    })
+    try {
+        const _ = await prisma.user.create({
+            data: {
+                email: email,
+                password: pwd,
+                handle: handle,
+                name: name || null,
+                roleId: 1
+            }
+        })
+    } catch (err) {
+        console.error(err)
+        res.status(500)
+        return
+    }
+
 
     res.redirect("/login?msg=Succsess%21%20Now%20log%20in%21")
 
