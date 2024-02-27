@@ -32,6 +32,7 @@ export const profileGet = async (prisma: PrismaClient) => async (req: Request, r
 
 
     res.render("profile", {
+        title: "DevPuzzles",
         user: fullUser,
         authorized: authorized,
     })
