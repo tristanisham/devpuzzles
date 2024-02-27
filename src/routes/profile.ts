@@ -1,11 +1,11 @@
 import { PrismaClient, User } from "@prisma/client";
 import { Request, Response } from "express";
-import { UserProfile } from "../auth.js";
 
 export const profileGet = async (prisma: PrismaClient) => async (req: Request, res: Response) => {
     const handle: string | undefined = req.params.handle;
     if (handle === undefined) {
         res.status(404);
+        res.send("No handle provided.")
         return;
     }
 
@@ -20,6 +20,12 @@ export const profileGet = async (prisma: PrismaClient) => async (req: Request, r
             posts: true
         }
     });
+
+    if (fullUser === null) {
+        res.status(404);
+        res.send("User does not exist.")
+        return;
+    }
 
     // Is this a bad idea?
     const authorized = req.user?.handle === fullUser?.handle

@@ -2,6 +2,7 @@
   "name": "devpuzzles",
   "type": "module",
   "main": "dist/main.js",
+  "version": "v0.0.1",
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "@prisma/client": "^5.10.2",
@@ -12,7 +13,6 @@
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
-    "express-rate-limit": "^7.1.5",
     "fastest-levenshtein": "^1.0.16",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",

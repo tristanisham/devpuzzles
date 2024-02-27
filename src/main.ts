@@ -1,7 +1,6 @@
 import express from "express";
 import process from "node:process";
 import morgan from "morgan";
-import { rateLimit } from "express-rate-limit";
 import { create as hbsCreate } from 'express-handlebars';
 import * as routes from "./routes/mod.js";
 import bodyParser from "body-parser";
@@ -13,12 +12,14 @@ import { getToken as getUserToken } from "./auth.js";
 import helmet from "helmet";
 
 
-
-
 // Server configuration starts
 const app = express();
 const prisma = new PrismaClient();
-app.use(morgan("tiny"));
+
+// Define a custom token to log the 'X-Forwarded-For' header
+morgan.token('x-forwarded-for', (req, res) => (Array.isArray(req.headers['x-forwarded-for']) ? req.headers['x-forwarded-for'].join(", ") : req.headers['x-forwarded-for']) || req.socket.remoteAddress);
+
+app.use(morgan(":method :url :status :response-time ms - :x-forwarded-for"));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
@@ -34,15 +35,6 @@ app.use(
     },
   }),
 );
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
-  standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-  // store: ... , // Use an external store for consistency across multiple server instances.
-});
-app.use(limiter);
 
 
 const hbs = hbsCreate({

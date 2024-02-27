@@ -1,7 +1,24 @@
-<main>
-    <div class="container">
-        {{#if authorized }}
-        <p>{{json user}}</p>
-        {{/if}}
-    </div>
+<main class="container">
+  <div >
+    <h1>
+      {{#if user.name}}
+        {{user.name}}
+      {{else}}
+        {{user.handle}}
+      {{/if}}
+    </h1>
+    <h2>@{{user.handle}}</h2>
+  </div>
+  <h2>Posts</h2>
+  {{#each user.posts}}
+  <div>
+    <h3>{{this.name}}</h3>
+    <p>{{this.description}}</p>
+  </div>
+  {{else}}
+  <div>
+    Nothing yet! 
+  </div>
+  {{/each}}
+
 </main>
