@@ -30,7 +30,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        "script-src": ["'self'", "devpuzzles.com"],
+        "script-src": ["'self'", "devpuzzles.com", "https://cdn.jsdelivr.net", "https://plausible.io"],
       },
     },
   }),
