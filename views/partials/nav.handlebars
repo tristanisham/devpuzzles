@@ -4,7 +4,7 @@
       <a class="btn btn-ghost text-xl">{{title}}</a>
     </div>
     <div class="flex-none">
-      <ul class="menu menu-horizontal px-1">
+      <ul class="menu menu-horizontal px-1 items-center">
         {{!-- Theme Toggle --}}
         <li>
           <button class="theme-toggle theme-toggle--reversed" type="button" title="Toggle theme"
@@ -21,20 +21,21 @@
               </g>
             </svg></button>
         </li>
-        <li><a>Link</a></li>
         <li>
           <details>
             <summary>
-              Parent
+              More
             </summary>
             <ul class="p-2 bg-base-100 rounded-t-none">
-              <li>
-                <a href="/login" class="nav-item">Login</a>
-              </li>
+              {{!-- <li>
+                <a href="/login" class="nav-item">Privacy Policy</a>
+              </li> --}}
               <li><a href="/about">About</a></li>
             </ul>
           </details>
         </li>
+        <li><a href="/login">Log in</a></li>
+
       </ul>
     </div>
   </div>
