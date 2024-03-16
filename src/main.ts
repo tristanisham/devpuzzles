@@ -11,13 +11,11 @@ import { faker } from '@faker-js/faker';
 import { authTokenCookie, getToken as getUserToken } from "./auth.js";
 import helmet from "helmet";
 import fileUpload from "express-fileupload";
-import { Server } from "socket.io"
 import { createServer } from 'node:http';
 // Server configuration starts
 const app = express();
 const prisma = new PrismaClient();
 const server = createServer(app);
-const io = new Server(server);
 // Define a custom token to log the 'X-Forwarded-For' header
 morgan.token('x-forwarded-for', (req, res) => (Array.isArray(req.headers['x-forwarded-for']) ? req.headers['x-forwarded-for'].join(", ") : req.headers['x-forwarded-for']) || req.socket.remoteAddress);
 
