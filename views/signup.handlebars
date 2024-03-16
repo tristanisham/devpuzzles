@@ -1,22 +1,72 @@
+<main class="min-h-screen flex items-center justify-center">
+  <div class="container mx-auto">
+    <!-- You can include the message display logic here if needed, similar to the login form -->
+    <form
+      action="/signup"
+      method="POST"
+      class="max-w-sm mx-auto p-10 shadow-lg rounded-lg bg-primary-content"
+    >
+      <h2 class="text-3xl text-center font-bold mb-6">Signup</h2>
 
-<main>
-    <div class="container">
-        <form action="/signup" method="POST" style="max-width: 400px; margin: auto;">
-            <h2>Signup</h2>
-            <label for="handle">Handle</label>
-            <input type="text" name="handle" id="handle" required placeholder="{{usernamePH}}" autofocus>
+      <div class="form-control w-full mb-4">
+        <label for="handle" class="label">
+          <span class="label-text">Handle</span>
+        </label>
+        <input
+          type="text"
+          name="handle"
+          id="handle"
+          class="input input-bordered w-full"
+          required
+          placeholder="Choose a handle"
+          autofocus
+        />
+      </div>
 
-            <label for="name">Your Name</label>
-            <input type="text" name="name" id="name" placeholder="{{namePH}}" autofocus>
-            
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required placeholder="Enter your email" autofocus>
+      <div class="form-control w-full mb-4">
+        <label for="name" class="label">
+          <span class="label-text">Your Name</span>
+        </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          class="input input-bordered w-full"
+          placeholder="What's your name?"
+          autofocus
+        />
+      </div>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" minlength="8" name="password" required placeholder="Enter your password">
+      <div class="form-control w-full mb-4">
+        <label for="email" class="label">
+          <span class="label-text">Email</span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="input input-bordered w-full"
+          required
+          placeholder="Enter your email"
+        />
+      </div>
 
-            <button type="submit">Signup</button>
-        </form>
-    </div>
+      <div class="form-control w-full mb-6">
+        <label for="password" class="label">
+          <span class="label-text">Password</span>
+        </label>
+        <input
+          type="password"
+          id="password"
+          minlength="8"
+          name="password"
+          class="input input-bordered w-full"
+          required
+          placeholder="Create a password"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full">Signup</button>
+    </form>
+  </div>
 </main>
-

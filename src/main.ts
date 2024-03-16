@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import { faker } from '@faker-js/faker';
 import { getToken as getUserToken } from "./auth.js";
 import helmet from "helmet";
-
+import fileUpload from "express-fileupload";
 
 // Server configuration starts
 const app = express();
@@ -24,6 +24,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 // This sets custom options for the
 // Content-Security-Policy header.
 app.use(
