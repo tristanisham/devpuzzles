@@ -8,14 +8,16 @@ import bodyParser from "body-parser";
 import { PrismaClient } from '@prisma/client'
 import cookieParser from "cookie-parser";
 import { faker } from '@faker-js/faker';
-import { getToken as getUserToken } from "./auth.js";
+import { authTokenCookie, getToken as getUserToken } from "./auth.js";
 import helmet from "helmet";
 import fileUpload from "express-fileupload";
-
+import { Server } from "socket.io"
+import { createServer } from 'node:http';
 // Server configuration starts
 const app = express();
 const prisma = new PrismaClient();
-
+const server = createServer(app);
+const io = new Server(server);
 // Define a custom token to log the 'X-Forwarded-For' header
 morgan.token('x-forwarded-for', (req, res) => (Array.isArray(req.headers['x-forwarded-for']) ? req.headers['x-forwarded-for'].join(", ") : req.headers['x-forwarded-for']) || req.socket.remoteAddress);
 
@@ -94,12 +96,14 @@ app.route("/signup")
   })
   .post(await routes.signupPost(prisma))
 
+
+
 // await loadPuzzlesRecursively("puzzles", app);
 
 
 const disconnectDB = async () => await prisma.$disconnect();
 
-app.listen(3000, () => console.log("http://localhost:3000")).on("close", disconnectDB)
+server.listen(3000, () => console.log("http://localhost:3000")).on("close", disconnectDB)
 
 // Listen for termination signals
 process.on('SIGINT', disconnectDB);
