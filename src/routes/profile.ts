@@ -11,13 +11,28 @@ export const profileGet = async (prisma: PrismaClient) => async (req: Request, r
 
 
 
+    // Profiles are public, so select only the fields the template needs. The
+    // previous query handed the whole User row - including the bcrypt password
+    // hash and the account's email - to the view context.
     const fullUser = await prisma.user.findUnique({
         where: {
             handle: handle
         },
-        include: {
-            role: true,
-            posts: true
+        select: {
+            handle: true,
+            name: true,
+            createdAt: true,
+            role: {
+                select: { role: true }
+            },
+            posts: {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    createdAt: true,
+                }
+            }
         }
     });
 

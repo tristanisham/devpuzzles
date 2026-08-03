@@ -1,9 +1,9 @@
+import "dotenv/config";
 import express from "express";
 import process from "node:process";
 import morgan from "morgan";
 import { create as hbsCreate } from 'express-handlebars';
 import * as routes from "./routes/mod.js";
-import bodyParser from "body-parser";
 // import { loadPuzzlesRecursively } from "./puzzle-api.js";
 import { PrismaClient } from '@prisma/client'
 import cookieParser from "cookie-parser";
@@ -11,20 +11,34 @@ import { faker } from '@faker-js/faker';
 import { authTokenCookie, getToken as getUserToken } from "./auth.js";
 import helmet from "helmet";
 import fileUpload from "express-fileupload";
+import rateLimit from "express-rate-limit";
 import { createServer } from 'node:http';
 // Server configuration starts
 const app = express();
 const prisma = new PrismaClient();
 const server = createServer(app);
+// X-Forwarded-For is set by the client, so it reaches us unvalidated. Strip
+// anything outside printable ASCII (CR/LF above all) and cap the length, or a
+// crafted header can inject forged lines into the log stream.
+const sanitizeLogValue = (value: string | undefined): string => {
+  if (value === undefined || value === "") return "-";
+  return value.replace(/[^\x20-\x7E]/g, "").slice(0, 200) || "-";
+};
+
 // Define a custom token to log the 'X-Forwarded-For' header
-morgan.token('x-forwarded-for', (req, res) => (Array.isArray(req.headers['x-forwarded-for']) ? req.headers['x-forwarded-for'].join(", ") : req.headers['x-forwarded-for']) || req.socket.remoteAddress);
+morgan.token('x-forwarded-for', (req, res) => sanitizeLogValue((Array.isArray(req.headers['x-forwarded-for']) ? req.headers['x-forwarded-for'].join(", ") : req.headers['x-forwarded-for']) || req.socket.remoteAddress));
 
 app.use(morgan(":method :url :status :response-time ms - :x-forwarded-for"));
 app.use(express.static("public"));
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload());
+// No route consumes uploads today, but this middleware parses multipart bodies
+// on every request. Without limits that is an unbounded in-memory write for any
+// anonymous caller.
+app.use(fileUpload({
+  limits: { fileSize: 1024 * 1024 }, // 1 MB
+  abortOnLimit: true,
+}));
 // This sets custom options for the
 // Content-Security-Policy header.
 app.use(
@@ -37,6 +51,16 @@ app.use(
   }),
 );
 
+
+// Credential endpoints are unauthenticated and hit the password hasher, so
+// they need a ceiling - otherwise they can be walked at full speed.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: "Too many attempts. Give it fifteen minutes.",
+});
 
 const hbs = hbsCreate({
   helpers: {
@@ -73,7 +97,7 @@ app.route("/login")
       msg: req.query.msg,
     })
   })
-  .post(await routes.loginPost(prisma))
+  .post(authLimiter, await routes.loginPost(prisma))
 
 app.get("/logout", (req, res): void => {
   res.clearCookie('token', { path: '/' });
@@ -92,7 +116,7 @@ app.route("/signup")
 
     })
   })
-  .post(await routes.signupPost(prisma))
+  .post(authLimiter, await routes.signupPost(prisma))
 
 
 
